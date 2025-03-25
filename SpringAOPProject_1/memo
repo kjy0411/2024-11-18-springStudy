@@ -1,0 +1,16 @@
+공통모듈 AOP (횡단지향 프로그램)
+
+----------------Before
+try
+{
+----------------Around
+}
+catch(Exception e)
+{
+----------------After-Throwing
+}
+finally
+{
+----------------After
+}
+return----------After-Return

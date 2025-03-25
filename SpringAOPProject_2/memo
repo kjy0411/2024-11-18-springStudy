@@ -1,0 +1,31 @@
+AOP : 공통기반의 메소드를 모아서 처리
+AOP의 개념
+1. Aspect : 공통으로 적용되는 기능을 모아둔 장소 => 공통 모듈
+2. Target : 적용하는 곳 => 모아주는 역할 (위빙)
+3. Advice : 어디에 어떤 기능을 추가할 지(JoinPoiunt + PointCut)
+4. JoinPoint : 시점 => 어디서 호출
+	public void display()
+	{
+		=> try 진입전 => Before
+		try
+		{
+			------ Around start
+				=> 로깅
+				=> 어떤 메소드를 요청
+				=> setAutoCommit(false)
+			핵심코드 => 메소드 호출
+			------ Around end
+				=> 걸린 시간 확인
+				=> commit
+		}
+		cathc(Exception ex)
+		{
+			=> 오류 발생시 처리 => After-Throwing
+		}
+		finally
+		{
+			=> 무조건 수행 => After
+		}
+		return => 정상 수행시 => After-Returning
+	}
+5. PointCut : 어떤 메소드 => execution("리턴형 패키지.클래스명.메소드명(..)")
