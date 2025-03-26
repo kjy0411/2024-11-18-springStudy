@@ -29,6 +29,14 @@
         </repository>
 	</repositories>
 	<dependencies>
+		<!-- 사용자 정의 (지원되지 않는 라이브러리 추가) --> 
+		<dependency>
+			<groupId>org.sun.ids</groupId>
+			<artifactId>ha</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/org.snu.ids.ha.jar</systemPath>
+		</dependency>
 		<!-- Jsoup -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
