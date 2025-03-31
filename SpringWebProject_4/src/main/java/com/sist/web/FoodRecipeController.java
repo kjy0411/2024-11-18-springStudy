@@ -71,6 +71,7 @@ public class FoodRecipeController {
 		ra.addAttribute("fno",fno); //sendRedirect인경우 사용 / ?대신에 사용
 		return "redirect:food_detail.do";
 	}
+	//상세보기
 	@GetMapping("food_detail.do")
 	public String food_detail(int fno,Model model) {
 		FoodVO vo=service.foodDetailData(fno);
@@ -78,5 +79,4 @@ public class FoodRecipeController {
 		model.addAttribute("vo",vo);
 		return "food/food_detail";
 	}
-	//상세보기
 }

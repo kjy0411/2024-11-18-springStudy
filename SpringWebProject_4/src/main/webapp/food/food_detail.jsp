@@ -33,8 +33,8 @@
     ]);
 
     var options = {
-      title: '맛집 소개 정보'
-      is3D: true
+      title: '맛집 소개 정보',
+      is3D: true,
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
