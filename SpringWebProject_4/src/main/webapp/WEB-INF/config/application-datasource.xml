@@ -11,15 +11,13 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
     <!-- properties파일 읽기 -->
     <util:properties id="db" location="/WEB-INF/config/db.properties"/>
+    
     <!-- DataSource설정 -->
     <bean id="ds" class="org.apache.commons.dbcp.BasicDataSource"
         p:driverClassName="#{db['driver']}"
         p:url="#{db['url']}"
         p:username="#{db['username']}"
         p:password="#{db['password']}"
-        p:maxActive="#{db['maxActive']}"
-        p:maxIdle="#{db['maxIdle']}"
-        p:maxWait="#{db['maxWait']}"
     />
     <!-- 트랜잭션 설정 -->
     <!-- SqlSessionFactory -->
