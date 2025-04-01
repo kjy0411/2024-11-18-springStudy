@@ -1,0 +1,15 @@
+aop
+	공통 소스, 반복 제거
+
+commons
+	1. 공통 예외처리 : Controller
+	2. 반복 구문 : 페이징
+
+config
+	=> XML환경설정 => 자바로 변경
+
+web
+	Model(Controller)
+
+task
+	스케쥴러 => Betch
