@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,9 +28,7 @@ h3{
 					<th width="20%" class="text-center">번호</th>
 					<td width="30%" class="text-center">${vo.no }</td>
 					<th width="20%" class="text-center">작성일</th>
-					<td width="30%" class="text-center">
-						<fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/>
-					</td>
+					<td width="30%" class="text-center">${vo.dbday }</td>
 				</tr>
 				<tr>
 					<th width="20%" class="text-center">이름</th>
@@ -44,18 +40,6 @@ h3{
 					<th width="20%" class="text-center">제목</th>
 					<td colspan="3">${vo.subject }</td>
 				</tr>
-				<c:if test="${vo.filecount>0 }">
-					<tr>
-						<th width="20%" class="text-center">첨부파일</th>
-						<td colspan="3">
-							<ul>
-								<c:forEach var="fvo" items="${list }">
-									<li><a href="download.do?fn=${fvo.filename }">${fvo.filename }</a>(${fvo.filesize }Bytes)</li>
-								</c:forEach>
-							</ul>
-						</td>
-					</tr>
-				</c:if>
 				<tr>
 					<td colspan="4" class="text-left" valign="top" height="200">
 						<pre style="white-space: pre-wrap; border: none; background: white;">${vo.content }</pre>

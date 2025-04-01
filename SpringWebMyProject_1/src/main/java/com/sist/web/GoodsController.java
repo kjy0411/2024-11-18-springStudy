@@ -23,7 +23,7 @@ public class GoodsController {
 	@Autowired
 	private GoodsService service;
 	
-	@GetMapping("goods_list")
+	@GetMapping("goods_list.do")
 	public String goods_list(String page,Model model) {
 		if(page==null)
 			page="1";
@@ -51,8 +51,8 @@ public class GoodsController {
 		model.addAttribute("totalpage",totalpage);
 		model.addAttribute("startPage",startPage);
 		model.addAttribute("endPage",endPage);
-		
-		return "goods/goods_list";
+		model.addAttribute("main_jsp","../goods/goods_list.jsp");
+		return "main/main";
 	}
 	//쿠키
 		@GetMapping("goods_detail_before.do")
