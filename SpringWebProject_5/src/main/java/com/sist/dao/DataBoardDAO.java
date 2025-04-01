@@ -2,6 +2,7 @@ package com.sist.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -31,5 +32,14 @@ public class DataBoardDAO {
 	public DataBoardVO boardDetailData(int no) {
 		mapper.hitIncrement(no);
 		return mapper.boardDetailData(no);
+	}
+	public String boardGetPassword(int no) {
+		return mapper.boardGetPassword(no);
+	}
+	public void boardDelete(int no) {
+		mapper.boardDelete(no);
+	}
+	public int databoardFileCount(int no) {
+		return mapper.databoardFileCount(no);
 	}
 }

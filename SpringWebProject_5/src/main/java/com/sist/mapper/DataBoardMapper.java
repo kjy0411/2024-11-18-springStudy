@@ -1,5 +1,6 @@
 package com.sist.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -28,4 +29,10 @@ public interface DataBoardMapper {
 	public void hitIncrement(int no);
 	@Select("SELECT * FROM springDataBoard WHERE no=#{no}")
 	public DataBoardVO boardDetailData(int no);
+	@Select("SELECT pwd FROM springDataBoard WHERE no=#{no}")
+	public String boardGetPassword(int no);
+	@Delete("DELETE FROM springDataBoard WHERE no=#{no}")
+	public void boardDelete(int no);
+	@Select("SELECT filecount FROM springDataBoard WHERE no=#{no}")
+	public int databoardFileCount(int no);
 }

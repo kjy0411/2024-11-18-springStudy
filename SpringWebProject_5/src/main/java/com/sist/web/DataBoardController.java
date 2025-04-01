@@ -3,6 +3,17 @@ package com.sist.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+/*
+ *  @GetMapping : 목록 출력, 상세보기 => SELECT
+ *  	default => 화면 출력
+ *  				<a> sendRedirect, location.href
+ *  @PostMapping : 입력값 => INSERT
+ *  				<form> ajax => type:'post', axios.post()
+ *  --------------------------------------- web에서는 두개만 사용
+ *  @putMapping : 수정 => UPDATE
+ *  @DeleteMapping : 삭제 => DELETE
+ *  -------------- RestFul @RequestMapping
+ */
 /*  
  *  1. DataBasc 연동
  *  2. Web 연동
@@ -40,23 +51,143 @@ import org.springframework.ui.Model;
  *  
  *  											| => interceptor
  */
-/*
- *  @GetMapping : 목록 출력, 상세보기 => SELECT
- *  	default => 화면 출력
- *  				<a> sendRedirect, location.href
- *  @PostMapping : 입력값 => INSERT
- *  				<form> ajax => type:'post', axios.post()
- *  --------------------------------------- web에서는 두개만 사용
- *  @putMapping : 수정 => UPDATE
- *  @DeleteMapping : 삭제 => DELETE
- *  -------------- RestFul @RequestMapping
+/*  
+ *  스프링 : 프레임워크
+ *  	   -------
+ *  		미리 구현된 클래스의 집합
+ *  		-------------------
+ *  		| 기본 틀이 만들어져 있다
+ *  			=> 기본 틀에 맞게 구현
+ *  			   --------------
+ *  				XML / Annotation
+ *  				--- 태그와 속성이 스프링 동작에 맞게 만들어져 있다
+ *  					클래스 메모리 할당 => 객체 생성
+ *  					<bean> : 클래스 한개 메모리 할당
+ *  					<context:componet-scan> : 패키지 단위로 객체 생성
+ *  					-----------------------
+ *  					| 객체 생성 요청 / 객체 생성(X) => 인터페이스,VO,임시클래스 제외
+ *  					=> 어노테이션
+ *  						: 개발자가 직접 제어 => VO, MainClass...
+ *  						: 스프링이 관리 => DAO, Manager, Service, Model(Controller)
+ *  						: 가비지 컬렉션 => 필요없는 객체 메모리를 회수
+ *  						  => 프로그램을 종료시에 => new / 필요없는 객체 소멸
+ *  						  => 많이 사용하는 객체를 관리 => 생성~소멸까지
+ *  						  => 핵심 코딩만 사용
+ *  					| 개발자의 수준, 실력에 상관없이 일정 수준 개발이 가능
+ *  						=> 형식이 동일하다
+ *  						=> 마이바티스, 스프링
+ *  							=> SQL : 경우의 수(JSON, SUBQUERY, 문장 2개..)
+ *  					| 초보자도 많은 시간을 투자할 필요가 없이 유지보수가 가능
+ *  					| 무료 (오픈 소스) => 개발시간 단축 => MVC동작 기본틀 => 기능만 구현
+ *  					  => Model (@Controller), DAO, JSP
+ *  						--------------------- ---  --- 결과값 출력
+ *  							|결과값을 전송		  |데이터 관리
+ *  							
+ *  					| 기능이 많이 있다 => 학습하는 시간이 많이 걸린다
+ *  						=> 버전 갱신이 자주 있다 (3개월에 한번..)
+ *  					| 프로그램 무겁다 => 속도가 저하
+ *  									----------
+ *  									Jquery => 3 => 4,5
+ *  					| LG / 한화 => Vue
+ *  					| 삼성 / 현대 => React
+ *  					| 금융권 => React
+ *  					-----------------------------------
+ *  					1. DI (값 주입)
+ *  						=> 스프링에서 객체 생성 => 필요한 데이터가 있는 경우
+ *  							=> 객체 멤버변수의 초기화
+ *  							초기화
+ *  							  = 명시적 초기화
+ *  								String driver="oracle..."
+ *  							  = setter DI
+ *  								p:변수명=값
+ *  							  = 생성자 DI
+ *  								c:매개변수명=값...
+ *  							  = 객체 주소값 대입 : p:객체명-ref="id"
+ *  								------------------------------
+ *  								@Autowired
+ *  						=> 객체 생성
+ *  							@Component => AOP, 일반 클래스(~Manager)
+ *  							@Repository => DAO => 테이블 1개 제어
+ *  							@Service => BI => 관련된 DAO 여러개를 한번에 제어
+ *  							@Controller => Model
+ *  											=> 화면 변경 => Router
+ *  							@RestController : Model
+ *  											=> 다른 프로그램과 연결
+ *  											=> JSON => JavaScript
+ *  							@ControllerAdvice : 공통 예외처리
+ *  							-------------------------------------------
+ *  
+ *  						AOP => 필요시마다 공통된 기능을 모아서 관리 => 자동 호출이 가능
+ *  								| 소스 중복 제거, 공통으로 적용 => 자동화 처리
+ *  								=> 어떤 메소드에서 적용 | 메소드 어느 영역인지
+ *  								   ---------------   ---------------
+ *  									| PointCut		  | JoinPoint
+ *  														@Before => aaa()
+ *  														@After => bbb()
+ *  														@After-Throwing => ccc()
+ *  														@Ahter-Returning => ddd()
+ *  														@Around => eee()
+ *  									----------------------------- Advice
+ *  										PointCut => execution("* 패키지.클래스명.메소드명 (매개변수..)")
+ *  															  -- 리턴형		 ------ *, 시작*
+ *  									=> Controller에서 적용
+ *  									public String board_int(String page,Model model)
+ *  									{
+ *  										@Before => 메소드 적용
+ *  										aaa()
+ *  										try
+ *  										{
+ *  											------------ Around start => log, transaction, 보안
+ *  											핵심 코드
+ *  											------------ Around end => 
+ *  										}
+ *  										catch(Exception ex)
+ *  										{
+ *  											@After-Throwing
+ *  											ccc()
+ *  										}
+ *  										finally
+ *  										{
+ *  											@After
+ *  											bbb()
+ *  										}
+ *  										return "" @After-Returning ddd()
+ *  									}
+ *  						ORM => MyBatis연동 / JPA연동
+ *  							   ----------	------ 자동화 (SQL문장을 자동으로 생성)
+ *  							   |				   SQL + 자동화
+ *  							   |				   public EmpVO findByEmpno(int empno)
+ *  							   |					=> SELECT * FROM emp WHERE empno=#{empno}
+ *  							   | XML / Annotation / XML+Annotation
+ *  													-------------- 주로 사용 => 길어나 복잡한 SQL => XML, 단순한 SQL => Annotation
+ *  						MVC
+ *  						  동작
+ *  						  브라우저 요청 => http://localhost:8080/web/board/list.do
+ *  						  
+ *  						  => 1. DispatcherServlet 요청을 받는다
+ *  							 2. HandlerMapping에 전송
+ *  								| databoard/list.do
+ *  									|
+ *  									@GetMapping("databoard/list.do") => if
+ *  									=> 밑에 있는 메소드 호출
+ *  									=> 전송값 => model.addAttribuyte()
+ *  									=> 어떤 JSP로 전송 할지
+ *  										retrun "main/main"
+ *  							 3. ViewResolver 전송받은 ModelAndView
+ *  						  
+ *  						  => DAO / Model / JSP
+ *  							 --- 핵심
  */
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
+
+import javax.servlet.http.HttpServletResponse;
+
 import com.sist.dao.*;
 import com.sist.vo.*;
 @Controller
@@ -77,19 +208,19 @@ public class DataBoardController {
 		 *  => 값이 없다 : String (null값이 들어간다)
 		 *  => 모든 값이 있는 경우 : 해당 데이터형
 		 *  
-		 *  1. 순서가 없다
-		 *  2. 모든 요청값은 String(null값이 들어간다)
-		 *  3.
-		 *  4.
-		 *  5. List, String[]
-		 *  			| 동적 쿼리
-		 *  	| 파일 업로드
-		 *  6. JPS내장 객체를 받을 수 있다
-		 *  	HttpServletRequest
-		 *  	HttpServletResponse
-		 *  	HttpSession
-		 *  	RedirectAttributes
-		 *  	ServletContext => application => realPath
+		 *  1. 순서가 없다 
+		 *     2. 모든 요청값은 String으로 받을 수 있다 
+		 *     3. 데이터변경 요청 => 해당 데이터형 
+		 *     4. 커맨드 객체 => 여러개가 동시에 => VO
+		 *     5. List , String[]
+		 *               | 동적 쿼리 
+		 *        | 파일 업로드 
+		 *     6. JSP 내장 객체를 받을 수 있다 
+		 *        HttpServletRequest 
+		 *        HttpServletResponse 
+		 *        HttpSession 
+		 *        RedirectAttributes 
+		 *        ServletContext => application => realPath
 		 */
 		if(page==null)
 			page="1";
@@ -151,5 +282,31 @@ public class DataBoardController {
 		model.addAttribute("vo",vo);
 		model.addAttribute("list",list);
 		return "databoard/detail";
+	}
+	@GetMapping("databoard/download.do")
+	public void databoard_download(String fn,HttpServletResponse response) {
+		try {
+			File file=new File("c:\\download\\"+fn);
+			// 1. 파일 크기, 파일명
+			response.setContentLength((int)file.length());
+			response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode(fn,"UTF-8"));
+			
+			BufferedInputStream bis=new BufferedInputStream(new FileInputStream(file));
+			// 서버에서 파일 읽기 => 클라이언트에 복사
+			BufferedOutputStream bos=new BufferedOutputStream(response.getOutputStream());
+			byte[] buffer=new byte[1024];
+			int i=0;// 읽은 바이트수
+			while((i=bis.read(buffer, 0, 1024))!=-1) {
+				bos.write(buffer,0,i);
+			}
+			bis.close();
+			bos.close();
+		} catch (Exception e) {}
+	}
+	@GetMapping("databoard/delete.do")
+	public String databoard_delete(int no,Model model) {
+		
+		model.addAttribute("no",no);
+		return "databoard/delete";
 	}
 }
