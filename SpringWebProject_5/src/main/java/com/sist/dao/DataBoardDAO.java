@@ -36,10 +36,16 @@ public class DataBoardDAO {
 	public String boardGetPassword(int no) {
 		return mapper.boardGetPassword(no);
 	}
-	public void boardDelete(int no) {
-		mapper.boardDelete(no);
+	public void databoardDelete(int no) {
+		mapper.databoardDelete(no);
 	}
 	public int databoardFileCount(int no) {
 		return mapper.databoardFileCount(no);
+	}
+	public DataBoardVO boardUpdateData(int no) {
+		return mapper.boardDetailData(no);
+	}
+	public void databoardUpdate(DataBoardVO vo) {
+		mapper.databoardUpdate(vo);
 	}
 }

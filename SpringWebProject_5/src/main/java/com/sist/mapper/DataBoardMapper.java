@@ -32,7 +32,18 @@ public interface DataBoardMapper {
 	@Select("SELECT pwd FROM springDataBoard WHERE no=#{no}")
 	public String boardGetPassword(int no);
 	@Delete("DELETE FROM springDataBoard WHERE no=#{no}")
-	public void boardDelete(int no);
+	public void databoardDelete(int no);
 	@Select("SELECT filecount FROM springDataBoard WHERE no=#{no}")
 	public int databoardFileCount(int no);
+	@Update("UPDATE springDataBoard SET name=#{name},subject=#{subject},content=#{content} WHERE no=#{no}")
+	public void databoardUpdate(DataBoardVO vo);
+	/*  
+	 *  매개변수 여러개 => INSERT, UPDATE, SELECT
+	 *  							   ------ 조건 검색
+	 *  
+	 *  => 매개변수 처리 : 한개일 경우 => 입란 데이터 타입
+	 *  	검색 : (String fd)
+	 *  	페이지 : (int page) ...
+	 *  => HashMap / VO / @Param
+	 */
 }

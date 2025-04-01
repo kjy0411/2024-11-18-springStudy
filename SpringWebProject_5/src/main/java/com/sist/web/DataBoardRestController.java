@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
@@ -55,8 +56,23 @@ public class DataBoardRestController {
 					}
 				} catch (Exception e) {}
 			}
-			dDao.boardDelete(no);
+			dDao.databoardDelete(no);
 		}
 		return result;
+	}
+	@PostMapping(value = "databoard/update_ok.do",produces = "text/html;charset=UTF-8")
+	public String databoard_update_ok(DataBoardVO vo) {
+		String js="";
+		String db_pwd=dDao.boardGetPassword(vo.getNo());
+		if(db_pwd.equals(vo.getPwd())) {
+			dDao.databoardUpdate(vo);
+			js="<script>location.href=\"detail.do?no="+vo.getNo()+"\";</script>";
+		}else {
+			js="<script>"
+			+ "alert(\"비밀번호가 틀렸습니다!!\");"
+			+ "history.back();"
+			+ "</script>";
+		}
+		return js;
 	}
 }

@@ -305,8 +305,13 @@ public class DataBoardController {
 	}
 	@GetMapping("databoard/delete.do")
 	public String databoard_delete(int no,Model model) {
-		
 		model.addAttribute("no",no);
 		return "databoard/delete";
+	}
+	@GetMapping("databoard/update.do")
+	public String databoard_update(int no,Model model) {
+		DataBoardVO vo=dDao.boardUpdateData(no);
+		model.addAttribute("vo",vo);
+		return "databoard/update";
 	}
 }
