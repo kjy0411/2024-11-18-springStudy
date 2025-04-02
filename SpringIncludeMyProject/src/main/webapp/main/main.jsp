@@ -8,9 +8,29 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+.main-row{
+	width: 1080px;
+	margin: 0px auto
+}
+</style>
 </head>
 <body>
 	<jsp:include page="header.jsp"/>
-	<jsp:include page="${main_jsp }"/>
+	<div class="container">
+		<div class="row main-row">
+			<div class="text-right">
+				<%-- 로그인 : Password 암호화 / 인터셉트 (ID저장,자동 로그인) --%>
+			</div>
+		</div>
+		<div class="row main-row">
+			<div class="col-sm-9">
+				<jsp:include page="${main_jsp }"/>
+			</div>
+			<div class="col-sm-3">
+				<jsp:include page="aside.jsp"/>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

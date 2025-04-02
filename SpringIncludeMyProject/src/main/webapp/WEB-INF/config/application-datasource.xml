@@ -9,6 +9,35 @@
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
-
+	<util:properties id="db" location="/WEB-INF/config/db.properties"/>
+	<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="#{db['driver']}"
+		p:url="#{db['url']}"
+		p:username="#{db['username']}"
+		p:password="#{db['password']}"
+        p:maxActive="#{db['maxActive']}"
+        p:maxIdle="#{db['maxIdle']}"
+        p:maxWait="#{db['maxWait']}"
+	/>
+	<tx:annotation-driven/>
+	<!-- MyBatis 로그 확인
+	=> 사용시 ssf의 p:dataSource-ref="ds"에 ds대신 dataSource
+	=> resources/log4j.xml에 주석 해제
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="ds" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL : " />
+			</bean>
+		</property>
+	</bean>
+	 -->
+	<bean id="ssf" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="ds"
+	/>
+	 <mybatis-spring:scan base-package="com.sist.mapper"
+	 	factory-ref="ssf"
+	 />
 
 </beans>
