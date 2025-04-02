@@ -28,7 +28,7 @@
 				<jsp:include page="${main_jsp }"/>
 			</div>
 			<div class="col-sm-3">
-				
+				<jsp:include page="aside.jsp"/>
 			</div>
 		</div>
 	</div>
