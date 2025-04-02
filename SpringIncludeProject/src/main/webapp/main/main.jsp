@@ -17,6 +17,20 @@
 </head>
 <body>
 	<jsp:include page="header.jsp"/>
-	<jsp:include page="${main_jsp }"/>
+	<div class="container">
+		<div class="row">
+			<div class="text-right">
+				<%-- 로그인 : Password 암호화 / 인터셉트 (ID저장,자동 로그인) --%>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-9">
+				<jsp:include page="${main_jsp }"/>
+			</div>
+			<div class="col-sm-3">
+				
+			</div>
+		</div>
+	</div>
 </body>
 </html>

@@ -13,3 +13,16 @@ web
 
 task
 	스케쥴러 => Betch
+
+Interceptio
+main.do 요청
+	|
+DispatcherServlet => FrontController : 요청을 받아서 HandlerMapping 응답
+	|
+HandlerMapping => Model을 찾아서 메소드 호출 => @GetMapping / @PostMapping
+	| => preHandle
+메소드 호출
+	| => postHandle
+ViewResolver
+	| => afterCompletion
+   JSP
