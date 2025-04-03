@@ -15,8 +15,17 @@ p{
 </style>
 </head>
 <body>
-	<div class="col-md-12" style="min-height: 500px">
-		<c:forEach var="vo" items="${list }">
+	<div class="col-md-12 ">
+		<form method="post" action="../recipe/find.do">
+			<input type="text" class="input-sm" size="15" name="fd" id="fd" value="${fd }" required="required">
+			<input type="submit" value="검색" class="btn btn-sm btn-defalut">
+		</form>
+	</div>
+	<div class="col-md-12" style="min-height: 500px;">
+		<c:if test="${rList.size()==0 }">
+			<h3 class="text-center">"${fd }"로 검색된 레시피가 없습니다</h3>
+		</c:if>
+		<c:forEach var="vo" items="${rList }">
 			<div class="col-md-3">
 				<div class="thumbnail">
 					<a href="../recipe/detail.do?no=${vo.no }"> <img src="${vo.poster }" title="${vo.title }" style="width: 180px; height: 150px">
@@ -31,13 +40,13 @@ p{
 	<div class="col-md-12 text-center">
 		<ul class="pagination">
 			<c:if test="${startPage>1 }">
-				<li><a href="../main/main.do?page=${startPage-1 }">&lt;</a></li>
+				<li><a href="../recipe/find.do?page=${startPage-1 }&fd=${fd}">&lt;</a></li>
 			</c:if>
 			<c:forEach var="i" begin="${startPage }" end="${endPage }">
-				<li ${i==curpage?"class=active":"" }><a href="../main/main.do?page=${i }">${i }</a></li>
+				<li ${i==curpage?"class=active":"" }><a href="../recipe/find.do?page=${i }&fd=${fd}">${i }</a></li>
 			</c:forEach>
 			<c:if test="${endPage<totalpage }">
-				<li><a href="../main/main.do?page=${endPage+1 }">&gt;</a></li>
+				<li><a href="../recipe/find.do?page=${endPage+1 }&fd=${fd}">&gt;</a></li>
 			</c:if>
 		</ul>
 		<br>

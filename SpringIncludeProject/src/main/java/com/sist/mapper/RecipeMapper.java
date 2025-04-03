@@ -19,4 +19,8 @@ public interface RecipeMapper {
 	public List<RecipeVO> recipeFindData(Map map);
 	//<select id="recipeFindTotalPage" resultType="int" parameterType="String">
 	public int recipeFindTotalPage(String fd);
+	//<select id="chefListData" resultType="ChefVO" parameterType="hashmap">
+	public List<ChefVO>chefListData(Map map);
+	@Select("SELECT CEIL(COUNT(*)/20.0) FROM chef")
+	public int chefTotalPage();
 }

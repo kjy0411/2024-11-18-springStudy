@@ -5,6 +5,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.sist.vo.RecipeVO" alias="RecipeVO"/>
+		<typeAlias type="com.sist.vo.ChefVO" alias="ChefVO"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/sist/mapper/recipe-mapper.xml"/>

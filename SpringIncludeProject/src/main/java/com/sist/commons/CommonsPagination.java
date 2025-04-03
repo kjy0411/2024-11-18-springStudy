@@ -19,9 +19,16 @@ public class CommonsPagination {
 	public static Map pageConfig(String page,int totalpage, int rowSize, final int BLOCK) {
 		if(page==null)
 			page="1";
+		page=page.replaceAll("[^0-9]", "");
+		if(page.equals(""))
+			page="1";
+		
 		int curpage=Integer.parseInt(page);
-		if(curpage>totalpage)
+		if(curpage<1) {
+			curpage=1;
+		}else if(curpage>totalpage) {
 			curpage=totalpage;
+		}
 		
 		Map map=new HashedMap();
 		int start=(rowSize*curpage)-(rowSize-1);
@@ -32,11 +39,11 @@ public class CommonsPagination {
 		if(endPage>totalpage)
 			endPage=totalpage;
 		
-		map.put("startPage", startPage);
-		map.put("endPage", endPage);
 		map.put("start", start);
 		map.put("end", end);
 		map.put("curpage", curpage);
+		map.put("startPage", startPage);
+		map.put("endPage", endPage);
 		return map;
 	}
 }

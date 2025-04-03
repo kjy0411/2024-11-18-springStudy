@@ -6,6 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+p{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+</style>
 </head>
 <body>
 	<table class="table">
@@ -20,12 +27,12 @@
 			<th class="text-center">영화명</th>
 		</tr>
 		<c:forEach var="mvo" items="${kList }">
-			<tr>
+			<tr title="${mvo.title }">
 				<td class="text-center">${mvo.mno }</td>
 				<td class="text-center">
 					<img src="${mvo.poster }" style="width: 30px;height: 30px;">
 				</td>
-				<td>${mvo.title }</td>
+				<td style="max-width: 150px"><p>${mvo.title }<p></td>
 			</tr>
 		</c:forEach>
 	</table>

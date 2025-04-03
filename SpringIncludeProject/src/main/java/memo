@@ -26,3 +26,21 @@ HandlerMapping => Model을 찾아서 메소드 호출 => @GetMapping / @PostMapp
 ViewResolver
 	| => afterCompletion
    JSP
+==========================================================================
+Spring Server
+	1. DI = xml(DAO), @Autowired
+			p: / c:
+	2. AOP = 공통기반
+	3. 인터셉트 = 자동 로그인
+	4. @ControllerAdvice : 공통 예외처리
+	5. 트랜잭션
+	6. MVC
+	6-1. ORM (MyBatis)
+	*** include
+	=========================================
+	7. 보안 (spring security) : 자동 로그인 / 권한 부여 / 비밀번호 암호화
+	8. Task
+	9. Front 연결 = @RestController
+==========================================================================
+동작순서
+.do<a> => Model => Mapper(SQL) = DAO = SERVICE => Model => JSP출력

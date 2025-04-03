@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sist.vo.ChefVO;
 import com.sist.vo.RecipeVO;
 import com.sist.mapper.*;
 @Repository
@@ -19,5 +20,17 @@ public class RecipeDAO {
 	}
 	public int recipeTotalPage() {
 		return mapper.recipeTotalPage();
+	}
+	public List<RecipeVO> recipeFindData(Map map){
+		return mapper.recipeFindData(map);
+	}
+	public int recipeFindTotalPage(String fd) {
+		return mapper.recipeFindTotalPage(fd);
+	}
+	public List<ChefVO>chefListData(Map map){
+		return mapper.chefListData(map);
+	}
+	public int chefTotalPage() {
+		return mapper.chefTotalPage();
 	}
 }

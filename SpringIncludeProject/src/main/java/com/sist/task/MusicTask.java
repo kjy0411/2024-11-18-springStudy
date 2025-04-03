@@ -16,13 +16,13 @@ public class MusicTask {
 	@Autowired
 	private MovieDAO mDao;
 	
-	@Scheduled(fixedRate = 24*60*60*1000)
+	//@Scheduled(fixedRate = 60*1000)
 	public void movieSchedule() {
 		try {
 			mDao.movieDelete();
 			Document doc=Jsoup.connect("https://www.kobis.or.kr/kobis/business/main/searchMainDailyBoxOffice.do").get();
 			String data=doc.toString();
-			data=data.substring(data.indexOf("["),data.indexOf("]")+1);
+			data=data.substring(data.indexOf("[{"),data.indexOf("}]")+2);
 			//System.out.println(data);
 			JSONParser jp=new JSONParser();
 			JSONArray root=(JSONArray)jp.parse(data);

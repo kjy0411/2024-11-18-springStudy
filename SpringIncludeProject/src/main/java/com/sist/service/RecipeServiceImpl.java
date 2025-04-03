@@ -38,4 +38,24 @@ public class RecipeServiceImpl implements RecipeService{
 		return dDao.recipeDetailData(no);
 	}
 
+	@Override
+	public List<RecipeVO> recipeFindData(Map map) {
+		return rDao.recipeFindData(map);
+	}
+
+	@Override
+	public int recipeFindTotalPage(String fd) {
+		return rDao.recipeFindTotalPage(fd);
+	}
+
+	@Override
+	public List<ChefVO> chefListData(Map map) {
+		return rDao.chefListData(map);
+	}
+
+	@Override
+	public int chefTotalPage() {
+		return rDao.chefTotalPage();
+	}
+
 }

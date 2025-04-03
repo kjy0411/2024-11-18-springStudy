@@ -29,7 +29,17 @@
 	</select>
 	<select id="recipeFindTotalPage" resultType="int" parameterType="String">
 		SELECT CEIL(COUNT(*)/12.0) FROM recipe
-		WHERE REGEXP_LIKE(title,#{fd})
+		<!-- 
+			WHERE REGEXP_LIKE(title,#{fd})
+		 -->
+		WHERE title LIKE '%'||''||'%'
 		AND no IN(SELECT no FROM recipe INTERSECT SELECT no FROM recipeDetail)
+	</select>
+	<select id="chefListData" resultType="ChefVO" parameterType="hashmap">
+		SELECT no,chef,poster,mem_cont1,mem_cont2,mem_cont3,mem_cont7,num
+		FROM (SELECT no,chef,poster,mem_cont1,mem_cont2,mem_cont3,mem_cont7,rownum as num
+		FROM (SELECT no,chef,poster,mem_cont1,mem_cont2,mem_cont3,mem_cont7
+		FROM chef ORDER BY no ASC))
+		WHERE num BETWEEN #{start} AND #{end}
 	</select>
 </mapper>
