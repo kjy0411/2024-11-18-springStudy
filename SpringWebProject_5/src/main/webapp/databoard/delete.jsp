@@ -18,7 +18,7 @@ h3{
   text-align: center;
 }
 </style>
-<script type="text/javascript" src="https://unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
