@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</style>
 </head>
 <body>
 	<h3 class="text-center">Spring를 이용한 게시판</h3>
