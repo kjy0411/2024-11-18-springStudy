@@ -15,4 +15,8 @@ public interface RecipeMapper {
 	@Select("SELECT CEIL(COUNT(*)/12.0) FROM recipe "
 			+ "WHERE no IN(SELECT no FROM recipe INTERSECT SELECT no FROM recipedetail)")
 	public int recipeTotalPage();
+	//<select id="recipeFindData" resultType="RecipeVO" parameterType="hashmap">
+	public List<RecipeVO> recipeFindData(Map map);
+	//<select id="recipeFindTotalPage" resultType="int" parameterType="String">
+	public int recipeFindTotalPage(String fd);
 }
