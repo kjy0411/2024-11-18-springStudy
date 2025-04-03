@@ -23,10 +23,6 @@ public class CompanyController {
 		List<CompanyVO> cList=service.comListData(map);
 		
 		model.addAttribute("cList",cList);
-		model.addAttribute("curpage",map.get("curpage"));
-		model.addAttribute("totalpage",map.get("totalpage"));
-		model.addAttribute("startPage",map.get("startPage"));
-		model.addAttribute("endPage",map.get("endPage"));
 		model.addAttribute("main_jsp","../com/list.jsp");
 		return "main/main";
 	}

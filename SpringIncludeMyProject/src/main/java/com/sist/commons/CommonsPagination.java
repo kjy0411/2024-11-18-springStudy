@@ -1,7 +1,11 @@
 package com.sist.commons;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections.map.HashedMap;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 // 메모리 할당X => static 메소드
 /*  
  *  공통으로 사용되는 기능 : 메소드
@@ -35,10 +39,11 @@ public class CommonsPagination {
 		
 		map.put("start", start);
 		map.put("end", end);
-		map.put("curpage", curpage);
-		map.put("totalpage", totalpage);
-		map.put("startPage", startPage);
-		map.put("endPage", endPage);
+		HttpServletRequest request=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		request.setAttribute("curpage", curpage);
+		request.setAttribute("totalpage", totalpage);
+		request.setAttribute("startPage", startPage);
+		request.setAttribute("endPage", endPage);
 		return map;
 	}
 }
