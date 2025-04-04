@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import com.sist.dao.*;
 import com.sist.vo.*;
 @Controller
+//sendRedirect / forward => void
+// request를 초기화 request에 값을 담아서 전송
 @RequestMapping("board/")
 public class BoardController {
 	@Autowired
@@ -26,12 +29,17 @@ public class BoardController {
 		int totalpage=(int)(Math.ceil(count/10.0));
 		count=count-((curpage*10)-10);
 		
+		String msg="관리자가 삭제한 게시물입니다";
+		String today=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		
+		model.addAttribute("msg",msg);
+		model.addAttribute("today",today);
 		model.addAttribute("bList",bList);
 		model.addAttribute("curpage",curpage);
 		model.addAttribute("totalpage",totalpage);
 		model.addAttribute("count",count);
 		model.addAttribute("main_jsp","../replyboard/list.jsp");
-		return "main/main";
+		return "main/main"; // forward
 	}
 	@GetMapping("insert.do")
 	public String board_insert(Model model) {
@@ -42,7 +50,7 @@ public class BoardController {
 	@PostMapping("insert_ok.do")
 	public String board_insert_ok(BoardVO vo) {
 		dao.boardInsert(vo);
-		return "redirect:../board/list.do";
+		return "redirect:../board/list.do"; //sendRedirect => 이전 화면으로 다시 실행
 	}
 	@GetMapping("detail.do")
 	public String board_detail(int no,Model model) {
@@ -69,4 +77,11 @@ public class BoardController {
 		dao.replyInsert(pno, vo);
 		return "redirect:../board/list.do";
 	}
+	@GetMapping("delete.do")
+	public String board_delete(int no,Model model) {
+		model.addAttribute("no",no);
+		model.addAttribute("main_jsp","../replyboard/delete.jsp");
+		return "main/main";
+	}
+	// .do => java(model) => jsp
 }

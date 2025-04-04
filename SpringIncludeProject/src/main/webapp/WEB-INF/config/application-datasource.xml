@@ -19,6 +19,29 @@
         p:maxIdle="#{db['maxIdle']}"
         p:maxWait="#{db['maxWait']}"
 	/>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="ds"
+	/>
+	<!-- 
+		DQL(SELECT) => (트랜잭션 대상이 아니다)
+		DML(INSERT/UPDATE/DELETE) => 저장(COMMIT), 취소(ROLLBACK)
+		=> 여러개의 SQL문이 있는 경우 일괄처리
+		 ex)입고 / 재고
+			출고 / 재고
+			카드결제 / 포인트 추가
+		
+		@Around
+			setAitoCommit(false)
+			SQL
+			...
+			SQL
+			commit
+		@AfterThrowing
+			rollback
+		@After
+			setAitoCommit(true)
+		=== 메소드 위에 @Transactional => AOP기반 , 보안
+	 -->
 	<tx:annotation-driven/>
 	
 	<!-- MyBatis 로그 확인 -->
