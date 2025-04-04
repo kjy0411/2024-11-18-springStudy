@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style type="text/css">
 .row{
-	width: 1080px;
+	width: 960px;
 	margin: 0px auto
 }
 </style>

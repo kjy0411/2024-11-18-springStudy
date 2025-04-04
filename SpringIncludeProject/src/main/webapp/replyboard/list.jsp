@@ -25,7 +25,15 @@
 		<c:forEach var="vo" items="${bList }">
 			<tr>
 				<td width="10%" char="text-center">${vo.no }</td>
-				<td width="45%"><a href="detail.do?no=${vo.no }">${vo.subject }</a></td>
+				<td width="45%">
+					<c:if test="${vo.group_tab>0 }">
+						<c:forEach var="i" begin="1" end="${vo.group_tab }">
+							&nbsp;&nbsp;
+						</c:forEach>
+						<img src="../replyboard/re_icon.png">
+					</c:if>
+					<a href="detail.do?no=${vo.no }">${vo.subject }</a>
+				</td>
 				<td width="15%" char="text-center">${vo.name }</td>
 				<td width="20%" char="text-center">${vo.dbday }</td>
 				<td width="10%" char="text-center">${vo.hit }</td>

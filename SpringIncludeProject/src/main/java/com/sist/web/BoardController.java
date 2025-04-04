@@ -58,14 +58,15 @@ public class BoardController {
 		model.addAttribute("main_jsp","../replyboard/update.jsp");
 		return "main/main";
 	}
-	@PostMapping("update_ok.do")
-	public String board_update_ok(BoardVO vo,Model model) {
-		
-		return "redirect:../board/detail.do?no="+vo.getNo();
-	}
 	@GetMapping("reply.do")
 	public String board_reply(int no,Model model) {
+		model.addAttribute("no",no);
 		model.addAttribute("main_jsp","../replyboard/reply.jsp");
 		return "main/main";
+	}
+	@PostMapping("reply_ok.do")
+	public String board_reply_ok(int pno,BoardVO vo) {
+		dao.replyInsert(pno, vo);
+		return "redirect:../board/list.do";
 	}
 }

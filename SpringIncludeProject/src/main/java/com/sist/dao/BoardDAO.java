@@ -37,10 +37,10 @@ public class BoardDAO {
 		List<BoardVO> list=new ArrayList<BoardVO>();
 		try {
 			getConnection();
-			String sql="SELECT no,subject,name,hit,TO_CHAR(regdate,'YYYY-MM-DD') as dbday,num "
-					+ "FROM (SELECT no,subject,name,hit,regdate,rownum as num "
-					+ "FROM (SELECT no,subject,name,hit,regdate "
-					+ "FROM springReplyBoard ORDER BY no DESC)) "
+			String sql="SELECT no,subject,name,hit,TO_CHAR(regdate,'YYYY-MM-DD') as dbday,group_tab,num "
+					+ "FROM (SELECT no,subject,name,hit,regdate,group_tab,rownum as num "
+					+ "FROM (SELECT no,subject,name,hit,regdate,group_tab "
+					+ "FROM springReplyBoard ORDER BY group_id DESC,group_step ASC)) "
 					+ "WHERE num BETWEEN ? AND ?";
 			ps=conn.prepareStatement(sql);
 			int rowSize=10;
@@ -56,6 +56,7 @@ public class BoardDAO {
 				vo.setName(rs.getString(3));
 				vo.setHit(rs.getInt(4));
 				vo.setDbday(rs.getString(5));
+				vo.setGroup_tab(rs.getInt(6));
 				list.add(vo);
 			}
 			rs.close();
@@ -70,7 +71,7 @@ public class BoardDAO {
 		int total=0;
 		try {
 			getConnection();
-			String sql="SELECT CEIL(COUNT(*)/10) FROM springReplyBoard";
+			String sql="SELECT COUNT(*) FROM springReplyBoard";
 			ps=conn.prepareStatement(sql);
 			ResultSet rs=ps.executeQuery();
 			rs.next();
@@ -187,16 +188,106 @@ public class BoardDAO {
 		}
 		return vo;
 	}
-	public void boardUpdate(BoardVO vo) {
+	public boolean boardUpdate(BoardVO vo) {
+		boolean bCheck=false;
 		try {
 			getConnection();
-			String sql="SELECT pwd FROM springReplyBoard";
-			sql="UPDATE springReplyBoard SET "
-					+ "name=?,subject=?,content=? "
-					+ "WHERE no=?";
+			String sql="SELECT pwd FROM springReplyBoard WHERE no="+vo.getNo();
+			ps=conn.prepareStatement(sql);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			String db_pwd=rs.getString(1);
+			rs.close();
+			if(db_pwd.equals(vo.getPwd())) {
+				bCheck=true;
+				sql="UPDATE springReplyBoard SET "
+					+"name=?,subject=?,content=? "
+					+"WHERE no=?";
+				ps=conn.prepareStatement(sql);
+				ps.setString(1, vo.getName());
+				ps.setString(2, vo.getSubject());
+				ps.setString(3, vo.getContent());
+				ps.setInt(4, vo.getNo());
+				ps.executeUpdate();
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			disConnection();
+		}
+		return bCheck;
+	}
+	// reply / delete => 트랜잭션
+	/*  no : 고유번호
+	 *  gi : 그룹(답변별로 모아서)
+	 *  gs : 그룹안에서 출력순서
+	 *  gt : 레벨(공백 깊이)
+	 *  root : 상위 게시물 번호
+	 *  depth : 답변 개수
+	 * 						no	gi	gs	gt	root	depth
+	 *  AAAAA				1	1	0	0	0		2
+	 *    =>DDDDD			5	1	1	1	1		0
+	 *    =>BBBBB			3	1	2	1	1		1
+	 *      =>CCCCC			4	1	3	2	3		0
+	 *  EEEEE				2	2	0	0	0		0
+	 *  
+	 */
+	public void replyInsert(int pno,BoardVO vo) {
+		try {
+			getConnection();
+			conn.setAutoCommit(false); // around start
+			// SQL문장 여러개 있는 경우 => Transactional
+			
+			// => 상위 게시물 => group_id,group_step,group_tab
+			String sql="SELECT group_id,group_step,group_tab "
+					+ "FROM springReplyBoard "
+					+ "WHERE no="+pno;
+			ps=conn.prepareStatement(sql);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			int gi=rs.getInt(1); // => 그대로
+			int gs=rs.getInt(2); // => +1
+			int gt=rs.getInt(3); // => +1
+			rs.close();
+			// => group_step을 증가
+			sql="UPDATE springReplyBoard SET "
+					+ "group_step=group_step+1 "
+					+ "WHERE group_id=? AND group_step>?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, gi);
+			ps.setInt(2, gs);
+			ps.executeUpdate();
+			// => insert
+			sql="INSERT INTO springReplyBoard(no,name,subject,content,pwd,group_id,group_step,group_tab,root) "
+				+"VALUES(srb_no_seq.nextval,?,?,?,?,?,?,?,?)";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, vo.getName());
+			ps.setString(2, vo.getSubject());
+			ps.setString(3, vo.getContent());
+			ps.setString(4, vo.getPwd());
+			ps.setInt(5, gi);
+			ps.setInt(6, gs+1);
+			ps.setInt(7, gt+1);
+			ps.setInt(8, pno);
+			ps.executeUpdate();
+			// => depth++
+			sql="UPDATE springReplyBoard SET "
+				+"depth=depth+1 "
+				+"WHERE no="+pno;
+			ps=conn.prepareStatement(sql);
+			ps.executeUpdate();
+			
+			conn.commit(); // around end
+		} catch (Exception e) {
+			try {
+				conn.rollback(); // after-throwing
+			} catch (Exception e2) {}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.setAutoCommit(true); // after
+			} catch (Exception e2) {}
 			disConnection();
 		}
 	}
