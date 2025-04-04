@@ -17,9 +17,9 @@ p{
 <body>
 	<c:forEach var="cvo" items="${cList }">
 		<div class="col-md-3">
-			<div class="thumbnail">
+			<div class="thumbnail" title="${cvo.name }">
 				<a href="../com/detail.do?cno=${cvo.cno }">
-					<img src="${cvo.poster!=null?'https://pds.saramin.co.kr/company'+=cvo.poster:'../com/logo/noimg.png' }" title="${cvo.name }" style="width: 180px; height: 90px">
+					<img src="${cvo.poster!=null?'https://pds.saramin.co.kr/company'+=cvo.poster:'../com/logo/noimg.png' }" style="width: 180px; height: 90px">
 					<div class="caption">
 						<p>${cvo.name }</p>
 					</div>

@@ -19,6 +19,9 @@
         p:maxIdle="#{db['maxIdle']}"
         p:maxWait="#{db['maxWait']}"
 	/>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="ds"
+	/>
 	<tx:annotation-driven/>
 	<!-- MyBatis 로그 확인
 	=> 사용시 ssf의 p:dataSource-ref="ds"에 ds대신 dataSource
@@ -35,6 +38,7 @@
 	 -->
 	<bean id="ssf" class="org.mybatis.spring.SqlSessionFactoryBean"
 		p:dataSource-ref="ds"
+		p:configLocation="WEB-INF/config/Config.xml"
 	/>
 	 <mybatis-spring:scan base-package="com.sist.mapper"
 	 	factory-ref="ssf"

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.CompanyMapper">
+	<select id="comFindListData" resultType="CompanyVO" parameterType="hashmap">
+		SELECT cno,name,poster,num
+		FROM (SELECT cno,name,poster,rownum as num
+		FROM (SELECT cno,name,poster
+		FROM company
+		WHERE name LIKE '%'||#{fd}||'%'
+		ORDER BY cno ASC))
+		WHERE num BETWEEN #{start} AND #{end}
+	</select>
+</mapper>

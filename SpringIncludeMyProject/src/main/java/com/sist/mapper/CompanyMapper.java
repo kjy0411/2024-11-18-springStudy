@@ -24,4 +24,8 @@ public interface CompanyMapper {
 			+ "FROM company "
 			+ "WHERE cno=#{cno}")
 	public CompanyVO comDetailData(int cno);
+	//<select id="comFindListData" resultType="CompanyVO" parameterType="hashmap">
+	public List<CompanyVO> comFindListData(Map map);
+	@Select("SELECT COUNT(*) FROM company WHERE name LIKE '%'||#{fd}||'%'")
+	public int comFindRowCount(String fd);
 }

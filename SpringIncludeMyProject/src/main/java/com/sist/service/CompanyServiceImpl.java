@@ -31,4 +31,12 @@ public class CompanyServiceImpl implements CompanyService{
 		}
 		return cDao.comDetailData(cno);
 	}
+	@Override
+	public List<CompanyVO> comFindListData(Map map) {
+		return cDao.comFindListData(map);
+	}
+	@Override
+	public int comFindRowCount(String fd) {
+		return cDao.comFindRowCount(fd);
+	}
 }

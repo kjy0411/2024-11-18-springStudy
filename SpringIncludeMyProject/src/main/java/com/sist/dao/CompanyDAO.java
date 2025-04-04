@@ -3,6 +3,7 @@ package com.sist.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +26,11 @@ public class CompanyDAO {
 	}
 	public CompanyVO comDetailData(int cno) {
 		return mapper.comDetailData(cno);
+	}
+	public List<CompanyVO> comFindListData(Map map){
+		return mapper.comFindListData(map);
+	}
+	public int comFindRowCount(String fd) {
+		return mapper.comFindRowCount(fd);
 	}
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.sist.vo.CompanyVO" alias="CompanyVO"/>
+		<typeAlias type="com.sist.vo.EmploymentVO" alias="EmploymentVO"/>
+		<typeAlias type="com.sist.vo.MusicVO" alias="MusicVO"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="com/sist/mapper/company-mapper.xml"/>
+	</mappers>
+</configuration>
