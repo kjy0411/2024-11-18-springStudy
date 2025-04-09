@@ -6,9 +6,24 @@
 	<servlet>
       <servlet-name>dispatcher</servlet-name>
       <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <!-- XML : WebApplicationContext
       <init-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/config/application-*.xml</param-value>
+      </init-param>
+       -->
+      <!-- 자바 -->
+      <init-param>
+      	<param-name>contextClass</param-name>
+      	<param-value>
+      		org.springframework.context.annotation.AnnotationConfigApplicationContext;
+      	</param-value>
+      </init-param>
+      <init-param>
+      	<param-name>contextConfigLocation</param-name>
+      	<param-value>
+      		com.sist.config.MvcConfig
+      	</param-value>
       </init-param>
     </servlet>
     <!-- URL Mapping : *.do -->
@@ -35,5 +50,5 @@
 	     <filter-name>encodingFilter</filter-name>
 	     <url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 </web-app>
