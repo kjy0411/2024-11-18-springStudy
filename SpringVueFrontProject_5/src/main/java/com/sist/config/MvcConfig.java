@@ -80,7 +80,7 @@ public class MvcConfig implements WebMvcConfigurer{
      */
 	// 5
 	@Bean("ds")
-	public DataSource dataSoruce() {
+	public DataSource dataSource() {
 		BasicDataSource ds=new BasicDataSource();
 		ds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
 		ds.setUrl("jdbc:oracle:thin:@localhost:1521:XE");
@@ -92,14 +92,14 @@ public class MvcConfig implements WebMvcConfigurer{
 	@Bean("ssf")
 	public SqlSessionFactory sqlSessionFactory() throws Exception{
 		SqlSessionFactoryBean ssf=new SqlSessionFactoryBean();
-		ssf.setDataSource(dataSoruce());
+		ssf.setDataSource(dataSource());
 		return ssf.getObject();
 	}
 	// 6
 	@Bean("transactionManager")
 	public PlatformTransactionManager transactionManager() {
 		DataSourceTransactionManager tx=new DataSourceTransactionManager();
-		
+		tx.setDataSource(dataSource());
 		return tx;
 	}
 }
