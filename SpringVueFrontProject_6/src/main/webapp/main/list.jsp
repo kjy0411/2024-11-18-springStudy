@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Seoul Location</h1>
+	<h1>Hello 스프링 세팅</h1>
 </body>
 </html>
