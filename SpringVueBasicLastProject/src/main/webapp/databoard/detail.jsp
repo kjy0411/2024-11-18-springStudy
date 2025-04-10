@@ -95,5 +95,7 @@
 				
 			}
 		}).mount('#detailApp')
+		
+	</script>
 </body>
 </html>
