@@ -81,7 +81,7 @@
 										<button class="btn-xm btn-success upbtn" :id="'up'+rvo.no" @click="replyUpdateForm(rvo.no)">수정</button>
 										<button class="btn-xm btn-info" @click="replyDelete(rvo.no)">삭제</button>
 									</span>
-									<button class="btn-xm btn-danger" v-if="sessionId!==''">댓글</button>
+									<button class="btn-xm btn-danger inbtn" :id="'in'+rvo.no" v-if="sessionId!==''" @click="replyReplyForm(rvo.no)">댓글</button>
 								</td>
 							</tr>
 							<tr>
@@ -101,7 +101,7 @@
 								<td colspan="2">
 									<textarea rows="4" cols="65" style="float: left" :id="'imsg'+rvo.no"></textarea>
 									<input type="button" value="댓글쓰기" class="btn-primary" style="float: left;height: 92px"
-										@click="replyInsert()">
+										@click="replyReply(rvo.no)">
 								</td>
 							</tr>
 							
@@ -160,7 +160,8 @@
 					reply_list:[],
 					msg:'',
 					sessionId:'${sessionId}',
-					upReply:false
+					upReply:false,
+					inReply:false
 				}
 			},
 			mounted(){
@@ -176,6 +177,42 @@
 				// 다른 JS 연결 => $(function(){})
 			},
 			methods:{
+				replyReply(no){
+					let msg=$('#imsg'+no).val()
+					if(msg===""){
+						$('#imsg'+no).focus()
+						return
+					}
+					axios.get('../reply/reply_reply_insert.do',{
+						params:{
+							bno:this.bno,
+							pno:no,
+							msg:msg
+						}
+					}).then(res=>{
+						this.reply_list=res.data
+						$('#m'+no).hide()
+						$('.inbtn').text("댓글")
+						this.inReply=false
+					}).catch(error=>{
+						console.log(error.response)
+					})
+				},
+				replyReplyForm(no){
+					$('.update').hide()
+					$('.insert').hide()
+					$('#m'+no).show()
+					$('.inbtn').text("댓글")
+					if(this.inReply===false){
+						this.inReply=true
+						$('#m'+no).show()
+						$('#in'+no).text("취소")
+					}else{
+						this.inReply=false
+						$('#m'+no).hide()
+						$('#in'+no).text("댓글")
+					}
+				},
 				replyDelete(no){
 					axios.get('../reply/delete_vue.do',{
 						params:{

@@ -26,4 +26,25 @@ public interface ReplyMapper {
 	public ReplyVO replyInfoData(int no);
 	@Delete("DELETE FROM vueReply WHERE group_id=#{group_id} AND group_step>=#{group_step}")
 	public void replyDelete(ReplyVO vo);
+	
+	//대댓글 순서(트랜잭션)
+	// 1. 상위 => groyp_id,group_step,group_tab
+	@Select("SELECT group_id,group_step,group_tab "
+			+ "FROM vueReply "
+			+ "WHERE no=#{no}")
+	public ReplyVO replyParentInfoData(int no);
+	// 2. 출력순서 변경(group_step)
+	@Update("UPDATE vueReply SET group_step=group_step+1 WHERE group_id=#{group_id} AND group_step>#{group_step}")
+	public void replyGroupStepIncrement(ReplyVO vo);
+	// 3. INSERT
+	@Insert("INSERT INTO vueReply(no,bno,id,name,msg,group_id,group_step,group_tab) "
+			+ "VALUES((SELECT NVL(MAX(no)+1,1) FROM vueReply),#{bno},#{id},#{name},#{msg},#{group_id},#{group_step},#{group_tab})")
+	public void replyReplyInsert(ReplyVO vo);
+	/*  
+	 *  				gi	gs	gt
+	 *  AAAAA			1	0	0
+	 *    =>DDDDD		1	1	1
+	 *    =>BBBBB		1	2	1
+	 *      =>CCCCC		1	3	2
+	 */
 }
