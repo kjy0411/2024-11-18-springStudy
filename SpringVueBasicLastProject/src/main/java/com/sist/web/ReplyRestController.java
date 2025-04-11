@@ -58,5 +58,8 @@ public class ReplyRestController {
 		vo.setName(name);
 		dao.replyReplyInsert(pno,vo);
 		return replyListData(bno);
+	@PostMapping("test/test.do")
+	public void test() {
+		
 	}
 }
