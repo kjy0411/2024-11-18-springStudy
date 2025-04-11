@@ -25,6 +25,8 @@
 				<tr>
 					<td>
 						<a href="insert.do" class="btn btn-sm btn-danger">등록</a>
+						<a href="../member/login.do" class="btn btn-sm btn-default" v-if="sessionId==''">로그인</a>
+						<a href="../member/logout.do" class="btn btn-sm btn-default" v-if="sessionId!=''">로그아웃</a>
 					</td>
 				</tr>
 			</table>
@@ -58,7 +60,8 @@
 					curpage:1,
 					totalpage:0,
 					startPage:0,
-					endPage:0
+					endPage:0,
+					sessionId:'${sessionId}'
 				}
 			},
 			mounted(){

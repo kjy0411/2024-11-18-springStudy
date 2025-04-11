@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,6 +64,46 @@
 				</tr>
 			</table>
 		</div>
+		<div style="height: 10px"></div>
+		<div class="row" id="replyApp">
+			<table class="table">
+				<tr>
+					<td>
+						<table class="table" v-for="rvo in reply_list">
+							<tr>
+								<td class="text-left" :style="'padding-left: '+rvo.group_tab*20+'px'">
+									<img src="../databoard/re_icon.png" v-if="rvo.group_tab>0">
+									◑{{rvo.name}}&nbsp;({{rvo.dbday}})
+								</td>
+								<td class="text-right">
+									<span v-if="rvo.id===sessionId">
+										<button class="btn-xm btn-success">수정</button>
+										<button class="btn-xm btn-info">삭제</button>
+									</span>
+									<button class="btn-xm btn-danger" v-if="sessionId!==''">댓글</button>
+								</td>
+							</tr>
+							<tr>
+								<td class="text-left" colspan="2" :style="'padding-left: '+(rvo.group_tab*20+35)+'px'">
+									<pre style="white-space: pre-wrap;background-color: white;border: none;">{{rvo.msg}}</pre>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<c:if test="${sessionScope.id!=null }">
+				<table class="table">
+					<tr>
+						<td>
+							<textarea rows="4" cols="65" style="float: left" ref="msg" v-model="msg"></textarea>
+							<input type="button" value="댓글쓰기" class="btn-primary" style="float: left;height: 94px"
+								@click="replyInsert()">
+						</td>
+					</tr>
+				</table>
+			</c:if>
+		</div>
 	</div>
 	<script>
 		let detailApp=Vue.createApp({
@@ -75,7 +116,7 @@
 				}
 			},
 			mounted(){
-				axios.get("detail_vue.do",{
+				axios.get('detail_vue.do',{
 					params:{
 						no:this.no
 					}
@@ -96,6 +137,57 @@
 			}
 		}).mount('#detailApp')
 		
+		let replyApp=Vue.createApp({
+			data(){
+				return{
+					bno:${no},
+					reply_list:[],
+					msg:'',
+					sessionId:'${sessionId}'
+				}
+			},
+			mounted(){
+				axios.get('../reply/list_vue.do',{
+					params:{
+						bno:this.bno
+					}
+				}).then(res=>{
+					console.log(res.data)
+					this.reply_list=res.data
+				}).catch(error=>{
+					console.log(error.response)
+				})
+			},
+			methods:{
+				replyInsert(){
+					if(this.msg===""){
+						this.$refs.msg.focus()
+						return
+					}
+					axios.post('../reply/insert_vue.do',null,{
+						params:{
+							bno:this.bno,
+							msg:this.msg
+						}
+					}).then(res=>{
+						console.log(res.data)
+						this.reply_list=res.data
+						this.msg=''
+					}).catch(error=>{
+						console.log(error.response)
+					})
+				},
+				range(tab){
+					let arr=[]
+					for(let i=0;i<tab;i++){
+						arr[i]=i
+					}
+					console.log(arr)
+					return arr
+					
+				}
+			}
+		}).mount('#replyApp')
 	</script>
 </body>
 </html>

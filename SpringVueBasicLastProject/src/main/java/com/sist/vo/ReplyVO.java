@@ -11,12 +11,14 @@ MSG        NOT NULL CLOB
 REGDATE             DATE         
 GROUP_ID            NUMBER       
 GROUP_STEP          NUMBER       
-GROUP_TAP           NUMBER       
+GROUP_TAB           NUMBER       
 ROOT                NUMBER       
 DAPTH               NUMBER       
  */
 import java.util.*;
 @Data
 public class ReplyVO {
-
+	private int no,bno,group_id,group_step,group_tab,root,depth;
+	private String id,name,msg,dbday;
+	private Date regdate;
 }

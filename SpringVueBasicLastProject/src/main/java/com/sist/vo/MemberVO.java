@@ -17,5 +17,9 @@ import lombok.Data;
 import java.util.*;
 @Data
 public class MemberVO {
-
+	private String id;
+	private String name;
+	private String sex;
+	private String msg;
+	private String pwd;
 }
