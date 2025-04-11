@@ -16,6 +16,10 @@
        p:username="#{db['username']}"
        p:password="#{db['password']}"
     />
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="ds"
+	/>
+    <tx:annotation-driven/>
     <bean 
        id="ssf"
        class="org.mybatis.spring.SqlSessionFactoryBean"

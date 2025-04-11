@@ -37,4 +37,14 @@ public class ReplyRestController {
 		
 		return replyListData(vo.getBno());
 	}
+	@GetMapping("reply/update_vue.do")
+	public List<ReplyVO> replyUpdate(ReplyVO vo){
+		dao.replyUpdate(vo);
+		return replyListData(vo.getBno());
+	}
+	@GetMapping("reply/delete_vue.do")
+	public List<ReplyVO> replyDelete(int no, int bno){
+		dao.replyDelete(no);
+		return replyListData(bno);
+	}
 }

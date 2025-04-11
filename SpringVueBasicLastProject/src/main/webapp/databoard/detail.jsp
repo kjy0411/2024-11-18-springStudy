@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <style type="text/css">
 .container{
@@ -77,8 +78,8 @@
 								</td>
 								<td class="text-right">
 									<span v-if="rvo.id===sessionId">
-										<button class="btn-xm btn-success">수정</button>
-										<button class="btn-xm btn-info">삭제</button>
+										<button class="btn-xm btn-success upbtn" :id="'up'+rvo.no" @click="replyUpdateForm(rvo.no)">수정</button>
+										<button class="btn-xm btn-info" @click="replyDelete(rvo.no)">삭제</button>
 									</span>
 									<button class="btn-xm btn-danger" v-if="sessionId!==''">댓글</button>
 								</td>
@@ -88,6 +89,22 @@
 									<pre style="white-space: pre-wrap;background-color: white;border: none;">{{rvo.msg}}</pre>
 								</td>
 							</tr>
+							
+							<tr :id="'u'+rvo.no" class="update">
+								<td colspan="2">
+									<textarea rows="4" cols="65" style="float: left"  :id="'umsg'+rvo.no">{{rvo.msg}}</textarea>
+									<input type="button" value="댓글수정" class="btn-primary" style="float: left;height: 92px"
+										@click="replyUpdate(rvo.no)">
+								</td>
+							</tr>
+							<tr :id="'m'+rvo.no" class="insert">
+								<td colspan="2">
+									<textarea rows="4" cols="65" style="float: left" :id="'imsg'+rvo.no"></textarea>
+									<input type="button" value="댓글쓰기" class="btn-primary" style="float: left;height: 92px"
+										@click="replyInsert()">
+								</td>
+							</tr>
+							
 						</table>
 					</td>
 				</tr>
@@ -97,7 +114,7 @@
 					<tr>
 						<td>
 							<textarea rows="4" cols="65" style="float: left" ref="msg" v-model="msg"></textarea>
-							<input type="button" value="댓글쓰기" class="btn-primary" style="float: left;height: 94px"
+							<input type="button" value="댓글쓰기" class="btn-primary" style="float: left;height: 92px"
 								@click="replyInsert()">
 						</td>
 					</tr>
@@ -131,19 +148,19 @@
 				}).catch(error=>{
 					console.log(error.response)
 				})
-			},
-			methods:{
-				
+				$('.update').hide()
+				$('.insert').hide()
 			}
 		}).mount('#detailApp')
-		
+		// 댓글 처리
 		let replyApp=Vue.createApp({
 			data(){
 				return{
 					bno:${no},
 					reply_list:[],
 					msg:'',
-					sessionId:'${sessionId}'
+					sessionId:'${sessionId}',
+					upReply:false
 				}
 			},
 			mounted(){
@@ -152,13 +169,58 @@
 						bno:this.bno
 					}
 				}).then(res=>{
-					console.log(res.data)
 					this.reply_list=res.data
 				}).catch(error=>{
 					console.log(error.response)
 				})
+				// 다른 JS 연결 => $(function(){})
 			},
 			methods:{
+				replyDelete(no){
+					axios.get('../reply/delete_vue.do',{
+						params:{
+							no:no,
+							bno:this.bno
+						}
+					}).then(res=>{
+						this.reply_list=res.data
+					}).catch(error=>{
+						console.log(error.response)
+					})
+				},
+				replyUpdate(no){
+					let msg=$('#umsg'+no).val()
+					axios.get('../reply/update_vue.do',{
+						params:{
+							no:no,
+							msg:msg,
+							bno:this.bno
+						}
+					}).then(res=>{
+						console.log(res.data)
+						this.reply_list=res.data
+						$('#u'+no).hide()
+						$('.upbtn').text("수정")
+						this.upReply=false
+					}).catch(error=>{
+						console.log(error.response)
+					})
+				},
+				replyUpdateForm(no){
+					$('.update').hide()
+					$('.insert').hide()
+					$('#u'+no).show()
+					$('.upbtn').text("수정")
+					if(this.upReply===false){
+						this.upReply=true
+						$('#u'+no).show()
+						$('#up'+no).text("취소")
+					}else{
+						this.upReply=false
+						$('#u'+no).hide()
+						$('#up'+no).text("수정")
+					}
+				},
 				replyInsert(){
 					if(this.msg===""){
 						this.$refs.msg.focus()
@@ -184,10 +246,10 @@
 					}
 					console.log(arr)
 					return arr
-					
 				}
 			}
 		}).mount('#replyApp')
+		
 	</script>
 </body>
 </html>

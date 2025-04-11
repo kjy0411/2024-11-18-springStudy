@@ -1,5 +1,6 @@
 package com.sist.dao;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +18,12 @@ public class ReplyDAO {
 	}
 	public void replyInsert(ReplyVO vo) {
 		mapper.replyInsert(vo);
+	}
+	public void replyUpdate(ReplyVO vo) {
+		mapper.replyUpdate(vo);
+	}
+	public void replyDelete(int no) {
+		ReplyVO vo=mapper.replyInfoData(no);
+		mapper.replyDelete(vo);
 	}
 }
