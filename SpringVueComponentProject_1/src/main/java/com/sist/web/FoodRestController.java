@@ -24,7 +24,7 @@ public class FoodRestController {
 	}
 	*/
 	@PostMapping("food/list_vue.do")
-	public List<FoodVO> food_list(int page,String ss,String[] fd){
+	public Map food_list(int page,String ss,String[] fd){
 		System.out.println(page);
 		System.out.println(fd.toString());
 		System.out.println(ss);
@@ -37,8 +37,14 @@ public class FoodRestController {
 		map.put("fdArr", fd);
 		map.put("start", start);
 		map.put("end", end);
-		List<FoodVO> list=dao.foodFindData(map);
 		
-		return list;
+		List<FoodVO> list=dao.foodFindData(map);
+		int totalpage=dao.foodTotalPage(map);
+
+		map=new HashMap();
+		map.put("list", list);
+		map.put("curpage", page);
+		map.put("totalpage", totalpage);
+		return map;
 	}
 }

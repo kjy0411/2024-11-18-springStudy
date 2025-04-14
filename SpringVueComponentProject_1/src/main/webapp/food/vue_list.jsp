@@ -30,7 +30,7 @@ p{
 			<input type="checkbox" value="A" v-model="fd">주소
 			<input type="checkbox" value="T" v-model="fd">음식종류
 			<input type="checkbox" value="M" v-model="fd">테마
-			<input type="text" size="15" class="input-sm" ref="ss" v-model="ss">
+			<input type="text" size="15" class="input-sm" ref="ss" v-model="ss" @keyup.enter="find()">
 			<input type="button" class="btn-sm btn-primary" value="검색" @click="find()">
 		</div>
 		<div style="height: 10px"></div>
@@ -46,6 +46,10 @@ p{
 				    </a>
 				  </div>
 				</div>
+				<ul class="pagination">
+					<li><a class="page-btn" @click="prev()">이전</a></li>
+					<li><a class="page-btn" @click="next()">다음</a></li>
+				</ul>
 			</div>
 			<div class="col-sm-4">
 			</div>
@@ -58,12 +62,21 @@ p{
 					ss:'',
 					fd:[],
 					curpage:1,
+					totalpage:0,
 					food_list:[]
 				}
 			},
 			mounted(){
 			},
 			methods:{
+				prev(){
+					this.curpage=this.curpage-1
+					this.find()
+				},
+				next(){
+					this.curpage=this.curpage+1
+					this.find()
+				},
 				find(){
 					let formData=new FormData()
 					formData.append("ss",this.ss)
@@ -74,7 +87,9 @@ p{
 					axios.post('list_vue.do',formData
 					).then(res=>{
 						console.log(res.data)
-						this.food_list=res.data
+						this.food_list=res.data.list
+						this.curpage=res.date.curpage
+						this.totalpage=res.date.totalpage
 					}).catch(error=>{
 						console.log(error.response)
 					})
