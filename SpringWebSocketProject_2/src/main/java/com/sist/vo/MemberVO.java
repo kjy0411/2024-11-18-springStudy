@@ -1,5 +1,7 @@
 package com.sist.vo;
 
+import javax.websocket.Session;
+
 import lombok.Data;
 
 /*
@@ -19,4 +21,5 @@ ADMIN             CHAR(1)
 @Data
 public class MemberVO {
 	private String id,pwd,name,sex,msg;
+	private Session session;
 }

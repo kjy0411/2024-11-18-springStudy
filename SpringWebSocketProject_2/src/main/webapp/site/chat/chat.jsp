@@ -27,7 +27,7 @@
 let websocket;
 // 서버 연결
 function connection(){
-	websocket=new WebSocket("ws://localhost:8080/web/site/chat/chat-ws.do")
+	websocket=new WebSocket("ws://localhost:8080/web/site/chat/chat-ws")
 	websocket.onopen=onOpen
 	websocket.onclose=onClose
 	websocket.onmessage=onMessage
@@ -46,14 +46,11 @@ function onMessage(event){
 		일대일 채팅 => 'mantoman'
 	*/
 	if(data.substring(0,4)==='msg:'){
-		appendMessage(data.substring(4));
+		$('#recvMsg').append(data.substring(4)+"<br>")
+		let ch=$('#chatArea').height()
+		let m=$('#recvMsg').height()-ch
+		$('#chatArea').scrollTop(m)
 	}
-}
-function appendMessage(msg){
-	$('#recvMsg').append(msg+"<br>")
-	let ch=$('#chatArea').height()
-	let m=$('#recvMsg').height()-ch
-	$('#chatArea').scrollTop(m);
 }
 // 종료
 function onClose(event){
@@ -72,6 +69,9 @@ function send(){
 	$('#sendMsg').val("")
 }
 $(function(){
+	$('#startBtn').click(function(){
+		connection()
+	})
 	$('#endBtn').click(function(){
 		disConnection()
 	})

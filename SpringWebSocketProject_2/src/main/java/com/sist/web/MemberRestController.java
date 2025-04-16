@@ -17,13 +17,9 @@ public class MemberRestController {
 	
 	@PostMapping("member/login_vue.do")
 	public String member_login(String id,String pwd,HttpSession session) {
-		System.out.println(id);
-		System.out.println(pwd);
 		MemberVO vo=dao.memberLogin(id, pwd);
 		if(vo.getMsg().equals("OK")) {
-			session.setAttribute("id", vo.getId());
-			session.setAttribute("name", vo.getName());
-			session.setAttribute("sex", vo.getSex());
+			session.setAttribute("vo", vo);
 		}
 		return vo.getMsg();
 	}
