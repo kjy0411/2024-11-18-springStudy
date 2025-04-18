@@ -32,6 +32,7 @@
       <url-pattern>/</url-pattern>
     </servlet-mapping>
     <!-- 
+    	Restful
     	SELECT = GET	=> @GetMapping
     	INSERT = POST	=> @PostMapping
     	UPDATE = PUT	=> @PutMapping
