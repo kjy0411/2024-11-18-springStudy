@@ -14,9 +14,18 @@ public class ReserveController {
 	@Autowired
 	private ReserveService service;
 	
+	@Autowired
+	private GoodsService gService;
+	
 	@GetMapping("reserve/main.do")
 	public String reserve_main(Model model) {
 		model.addAttribute("main_jsp","../reserve/reserve_main.jsp");
+		return "main/main";
+	}
+	@GetMapping("mypage/mypage_main.do")
+	public String mypage_mypage_main(Model model) {
+		model.addAttribute("mypage_jsp","../mypage/home.jsp");
+		model.addAttribute("main_jsp","../mypage/mypage_main.jsp");
 		return "main/main";
 	}
 	@GetMapping("mypage/reserve_list.do")
@@ -25,7 +34,8 @@ public class ReserveController {
 		List<ReserveVO> list=service.reserveMyPageListData(userid);
 		
 		model.addAttribute("list",list);
-		model.addAttribute("main_jsp","../mypage/reserve_list.jsp");
+		model.addAttribute("mypage_jsp","../mypage/reserve_list.jsp");
+		model.addAttribute("main_jsp","../mypage/mypage_main.jsp");
 		return "main/main";
 	}
 	@GetMapping("reserve/reserve_delete.do")

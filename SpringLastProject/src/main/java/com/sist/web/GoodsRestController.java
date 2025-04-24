@@ -1,8 +1,11 @@
 package com.sist.web;
 import java.util.*;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sist.service.*;
@@ -38,5 +41,33 @@ public class GoodsRestController {
 	public GoodsVO goods_detail(int no) {
 		GoodsVO vo=service.busanGoodsDetailData(no);
 		return vo;
+	}
+	@PostMapping("goods/cart_insert.do")
+	public String goods_cart_insert(int gno,int account,HttpSession session) {
+		String result="";
+		String userid=(String)session.getAttribute("userid");
+
+		CartVO vo=new CartVO();
+		vo.setUserid(userid);
+		vo.setGno(gno);
+		vo.setAccount(account);
+		try {
+			service.goodsCartInsert(vo);
+			result="yes";
+		} catch (Exception e) {
+			result=e.getMessage();
+		}
+		return result;
+	}
+	@GetMapping("goods/buy_vue.do")
+	public String goods_buy(int cno) {
+		String result="";
+		try {
+			result="yes";
+			service.goodsBuyUpdate(cno);
+		} catch (Exception e) {
+			result=e.getMessage();
+		}
+		return result;
 	}
 }

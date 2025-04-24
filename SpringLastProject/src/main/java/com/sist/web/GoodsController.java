@@ -41,5 +41,27 @@ public class GoodsController {
 		model.addAttribute("main_jsp","../goods/detail.jsp");
 		return "main/main";
 	}
-	
+	@GetMapping("mypage/cart_list.do")
+	public String mypage_cart_list(Model model,HttpSession session){
+		String userid=(String)session.getAttribute("userid");
+		List<CartVO> list=service.goodsCartListData(userid);
+		model.addAttribute("list",list);
+		model.addAttribute("mypage_jsp","../mypage/cart_list.jsp");
+		model.addAttribute("main_jsp","../mypage/mypage_main.jsp");
+		return "main/main";
+	}
+	@GetMapping("mypage/cart_delete.do")
+	public String mypage_cart_delete(int cno) {
+		service.goodsCartCancel(cno);
+		return "redirect:../mypage/cart_list.do";
+	}
+	@GetMapping("mypage/buy_list.do")
+	public String mypage_buy_list(Model model,HttpSession session){
+		String userid=(String)session.getAttribute("userid");
+		List<CartVO> list=service.goodsBuyListData(userid);
+		model.addAttribute("list",list);
+		model.addAttribute("mypage_jsp","../mypage/buy_list.jsp");
+		model.addAttribute("main_jsp","../mypage/mypage_main.jsp");
+		return "main/main";
+	}
 }
