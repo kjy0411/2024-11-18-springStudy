@@ -125,8 +125,12 @@
                                         <a class="dropdown-item" href="#">쉐프</a>
                                     </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="../movie/list.do">여행 동영상</a>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">영상</a>
+                                    <div class="dropdown-menu" aria-labelledby="yummyDropdown">
+                                        <a class="dropdown-item" href="../movie/list.do">여행 동영상</a>
+                                        <a class="dropdown-item" href="../movie/movie_list.do">인기 영상</a>
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="../goods/list.do">부산 특산물</a>

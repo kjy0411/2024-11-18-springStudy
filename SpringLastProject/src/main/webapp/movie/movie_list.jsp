@@ -27,7 +27,7 @@ p{
             <div class="row h-100 align-items-center">
                 <div class="col-12">
                     <div class="bradcumb-title text-center">
-                        <h2>여행 동영상</h2>
+                        <h2>영화</h2>
                     </div>
                 </div>
             </div>
@@ -52,23 +52,31 @@ p{
     <!-- ****** Archive Area Start ****** -->
     <section class="archive-area section_padding_80" id="listApp">
         <div class="container">
+        	<div class="text-center" style="display: block;">
+        		<input type="button" class="btm-sm btn-danger" value="인기영화" @click="view('https://api.themoviedb.org/3/movie/popular')">
+        		<input type="button" class="btm-sm btn-info" value="현재 상영작" @click="view('https://api.themoviedb.org/3/movie/now_playing')">
+        		<input type="button" class="btm-sm btn-success" value="인기 TV쇼" @click="view('https://api.themoviedb.org/3/tv/popular')">
+        		<input type="button" class="btm-sm btn-warning" value="TV 쇼 순위" @click="view('https://api.themoviedb.org/3/tv/top_rated')">
+        	</div>
             <div class="row">
 				<div class="row text-center">
-					<input type="text" class="form-control" v-model="fd" :value="fd" @keydown.enter="movieFind()">
 				</div>
 				<div style="min-height: 10px"></div>
                 <!-- Single Post -->
-                <div class="col-12 col-md-6 col-lg-4" v-for="vo in list">
+                <div class="col-12 col-md-6 col-lg-4" v-for="vo in movies">
                     <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
                         <!-- Post Thumb -->
                         <div class="post-thumb">
-                        	<iframe :src="'https://www.youtube.com/embed/'+vo.videoid" style="width: 320px;height: 250px"></iframe>
+                        	<a :href="'https:/www.themoviedb.org/movie/'+vo.id">
+                        		<img :src="'https://image.tmdb.org/t/p/w500/'+vo.poster_path">
+                        	</a>
                         </div>
                         <!-- Post Content -->
                         <div class="post-content">
                             <div class="post-meta d-flex">
                                 <div class="post-author-date-area d-flex">
                                     <!-- Post Author -->
+                                    <a href="#" style="color: gray;">{{vo.vote_average}}</a>
                                 </div>
                             </div>
                             <a href="#">
@@ -85,25 +93,17 @@ p{
 	let listApp=Vue.createApp({
 		data(){
 			return {
-				fd:'부산여행',
-				list:[]
+				movies:[]
 			}
 		},
 		mounted(){
-			this.dataRecv()
 		},
 		methods:{
-			movieFind(){
-				this.dataRecv()
-			},
-			dataRecv(){
-				axios.get('../movie/find_vue.do',{
-					params:{
-						fd:this.fd
-					}
-				}).then(res=>{
-					console.log(res.data)
-					this.list=res.data.list
+			view(url){
+				console.log(url)
+				axios.get(url+"?api_key=697729d3f274ce88cf5729d38280fd33")
+				.then(res=>{
+					this.movies=res.data.results
 				}).catch(error=>{
 					console.log(error.response)
 				})

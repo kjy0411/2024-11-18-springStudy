@@ -17,8 +17,9 @@ public class YoutubeManager {
 	}
 	public String youtubeJsonData(String fd) {
 		String result="";
+		String key="";
 		try {
-			String strUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q="+URLEncoder.encode(fd,"UTF-8")+"&type=video&key=AIzaSyCypweGSgcODVMFXXYaJVJ0fqlftdbjPqs";
+			String strUrl="https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q="+URLEncoder.encode(fd,"UTF-8")+"&type=video&key="+key;
 			URL url=new URL(strUrl);
 			HttpURLConnection conn=(HttpURLConnection)url.openConnection();
 			// Jsoup.connection()
@@ -36,7 +37,6 @@ public class YoutubeManager {
 				in.close();
 				conn.disconnect();
 			}
-			System.out.println(sb.toString());
 		} catch (Exception e) {}
 		return result;
 	}
