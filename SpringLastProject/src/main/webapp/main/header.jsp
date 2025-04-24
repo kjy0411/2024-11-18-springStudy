@@ -73,7 +73,7 @@
                 <!-- Logo Area Start -->
                 <div class="col-12">
                     <div class="logo_area text-center">
-                        <a href="main.do" class="yummy-logo">부산 여행</a>
+                        <a href="../main/main.do" class="yummy-logo">부산 여행</a>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                         <div class="collapse navbar-collapse justify-content-center" id="yummyfood-nav">
                             <ul class="navbar-nav" id="yummy-nav">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="main.do">홈 <span class="sr-only">(current)</span></a>
+                                    <a class="nav-link" href="../main/main.do">홈 <span class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">부산에 가면</a>
@@ -126,19 +126,24 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">부산 특산물</a>
+                                    <a class="nav-link" href="../movie/list.do">여행 동영상</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">커뮤니티</a>
+                                    <a class="nav-link" href="../goods/list.do">부산 특산물</a>
                                 </li>
+                                <c:if test="${sessionScope.userid!=null }">
+	                                <li class="nav-item">
+	                                    <a class="nav-link" href="../reserve/main.do">빠른 예약</a>
+	                                </li>
+                                </c:if>
                                 <sec:authorize access="hasRole('ROLE_USER')">
 	                                <li class="nav-item">
-	                                    <a class="nav-link" href="#">마이페이지</a>
+	                                    <a class="nav-link" href="../mypage/reserve_list.do">마이페이지</a>
 	                                </li>
                                 </sec:authorize>
                                 <sec:authorize access="hasRole('ROLE_ADMIN')">
 	                                <li class="nav-item">
-	                                    <a class="nav-link" href="#">관리자페이지</a>
+	                                    <a class="nav-link" href="../admin/reserve_list.do">관리자페이지</a>
 	                                </li>
                                 </sec:authorize>
                             </ul>

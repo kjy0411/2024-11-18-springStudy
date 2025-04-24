@@ -10,6 +10,8 @@ import com.sist.service.BusanInfoService;
 import com.sist.vo.BusanInfoVO;
 
 import java.util.*;
+
+import javax.servlet.http.HttpSession;
 /*  
  *  7~6 : 3~4 
  *  => 검색, 페이지, 댓글, 결제, 예약 => 화면이동 X => Vuejs
@@ -49,13 +51,15 @@ public class BusanInfoController {
 	// 주고 받기
 	// => useState(React)
 	@GetMapping("busan/info_detail.do")
-	public String busan_info_detail(int no,Model model) {
+	public String busan_info_detail(int no,Model model, HttpSession session) {
+		String id=(String)session.getAttribute("userid");
 		BusanInfoVO vo=service.BusanInfoDetailData(no);
 		String addr1=vo.getAddress();
 		addr1=addr1.substring(addr1.indexOf(" "));
 		String addr2=addr1.trim();
 		addr2=addr2.substring(0,addr2.indexOf(" "));
 		
+		model.addAttribute("sessionId",id);
 		model.addAttribute("vo",vo);
 		model.addAttribute("addr",addr2);
 		model.addAttribute("main_jsp","../busan/info_detail.jsp");
