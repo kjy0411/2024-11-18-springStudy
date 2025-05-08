@@ -29,15 +29,6 @@
     <div class="breadcumb-nav">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ****** Breadcumb Area End ****** -->
-    <section class="single_blog_area section_padding_80" id="reserveApp">
-        <div class="container">
-            <div class="row justify-content-center">
             	<table class="table">
             		<tr>
             			<th class="text-center">번호</th>
@@ -75,6 +66,40 @@
             	</table>
             </div>
         </div>
+    </div>
+    <!-- ****** Breadcumb Area End ****** -->
+    <section class="single_blog_area section_padding_80" id="reserveApp">
+        <div class="container">
+            <div class="row justify-content-center">
+            	<div class="row no=gutters">
+            		<button class="btn btn-sm btn-danger" @click="test(10)">통계보기</button>
+            		<button class="btn btn-sm btn-success" @click="test(20)">통계보기</button>
+            		<button class="btn btn-sm btn-info" @click="test(30)">통계보기</button>
+            		<img :src="'../img/'+emp">
+            	</div>
+            </div>
+        </div>
     </section>
+    <script>
+    let app=Vue.createApp({
+    	data(){
+    		return {
+    			emp:'emp10.png'
+    		}
+    	},
+    	methods:{
+    		test(no){
+    			axios.get('http://127.0.0.1:8000/web/emp/',{
+    				params:{
+    					deptno:no
+    				}
+    			})
+    			.then(res=>{
+    				this.emp="emp"+no+".png"
+    			})
+    		}
+    	}
+    }).mount("#reserveApp")
+    </script>
 </body>
 </html>
